@@ -133,20 +133,22 @@ public class ProjectBuilder
     [MenuItem("Custom/CI/Build PC")]
     static void PerformPCBuildClient()
     {
+        string pcDir = "/PC";
         BuildOptions opt = BuildOptions.None;
 
         char sep = Path.DirectorySeparatorChar;
-        string BUILD_TARGET_PATH = Path.GetFullPath(".") + sep + TARGET_DIR + string.Format("/PCBuild_{0}.exe", PlayerSettings.bundleVersion);
+        string BUILD_TARGET_PATH = Path.GetFullPath(".") + sep + TARGET_DIR + pcDir + string.Format("/PCBuild_{0}.exe", PlayerSettings.bundleVersion);
         GenericBuild(SCENES, BUILD_TARGET_PATH, BuildTarget.StandaloneWindows64, opt);
     }
 
     [MenuItem("Custom/CI/Build_Android")]
     static void PerformAndroidBuildClient()
     {
+        string androidDir = "/Android";
         BuildOptions opt = BuildOptions.None;
 
         char sep = Path.DirectorySeparatorChar;
-        string BUILD_TARGET_PATH = Path.GetFullPath(".") + sep + TARGET_DIR + string.Format("/PCBuild_{0}.apk", PlayerSettings.bundleVersion);
+        string BUILD_TARGET_PATH = Path.GetFullPath(".") + sep + TARGET_DIR + androidDir + string.Format("/AndroidBuild_{0}.apk", PlayerSettings.bundleVersion);
         GenericBuild(SCENES, BUILD_TARGET_PATH, BuildTarget.Android, opt);
     }
 }
