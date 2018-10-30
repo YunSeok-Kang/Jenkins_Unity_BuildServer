@@ -32,11 +32,13 @@ public class ProjectBuilder
 
         CSVWriteAndRead csvRW = new CSVWriteAndRead(string.Format("build_report_test_{0}.csv", dateToFileName));
 
-        EditorUserBuildSettings.SwitchActiveBuildTarget(build_target);
+        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, build_target);
         UnityEditor.Build.Reporting.BuildReport res = BuildPipeline.BuildPlayer(scenes, target_path, build_target, build_options);
 
         // res.summary의 내용을 여기(빌드 결과)와 아래의 Summary 영역 두 개로 나눔.
 
+
+        // 클래스화 시켜야.
         csvRW.AppendLine("빌드 결과");
         csvRW.AppendLine("성공 여부, 결과물 크기(byte), 빌드 시간, TotalWarnings, TotalErrors");
         csvRW.AppendLine(res.summary.result + ", " + res.summary.totalSize + ", " + res.summary.totalTime + ", " + res.summary.totalWarnings + ", " + res.summary.totalErrors);
@@ -136,5 +138,15 @@ public class ProjectBuilder
         char sep = Path.DirectorySeparatorChar;
         string BUILD_TARGET_PATH = Path.GetFullPath(".") + sep + TARGET_DIR + string.Format("/PCBuild_{0}.exe", PlayerSettings.bundleVersion);
         GenericBuild(SCENES, BUILD_TARGET_PATH, BuildTarget.StandaloneWindows64, opt);
+    }
+
+    [MenuItem("Custom/CI/Build_Android")]
+    static void PerformAndroidBuildClient()
+    {
+        BuildOptions opt = BuildOptions.None;
+
+        char sep = Path.DirectorySeparatorChar;
+        string BUILD_TARGET_PATH = Path.GetFullPath(".") + sep + TARGET_DIR + string.Format("/PCBuild_{0}.apk", PlayerSettings.bundleVersion);
+        GenericBuild(SCENES, BUILD_TARGET_PATH, BuildTarget.Android, opt);
     }
 }
