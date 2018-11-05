@@ -23,6 +23,15 @@ public class ProjectBuilder
         return EditorScenes.ToArray();
     }
 
+    static void AndroidBuild(BuildOptions option = BuildOptions.None)
+    {
+        string androidDir = "/Android";
+
+        char sep = Path.DirectorySeparatorChar;
+        string BUILD_TARGET_PATH = Path.GetFullPath(".") + sep + TARGET_DIR + androidDir + string.Format("/AndroidBuild_{0}.apk", PlayerSettings.bundleVersion);
+        GenericBuild(SCENES, BUILD_TARGET_PATH, BuildTargetGroup.Android, BuildTarget.Android, option, "Android_BuildReport");
+    }
+
     static void GenericBuild(string[] scenes, string target_path, BuildTargetGroup buildTargetGroup, BuildTarget build_target, BuildOptions build_options, string buildReportFileName = "BuildReport")
     {
         // 날짜 포맷 결정 방법은 아래 참고.
@@ -51,22 +60,23 @@ public class ProjectBuilder
     [MenuItem("Custom/CI/Build_Android")]
     static void PerformAndroidBuildClient()
     {
-        string androidDir = "/Android";
-        BuildOptions opt = BuildOptions.None;
-
-        char sep = Path.DirectorySeparatorChar;
-        string BUILD_TARGET_PATH = Path.GetFullPath(".") + sep + TARGET_DIR + androidDir + string.Format("/AndroidBuild_{0}.apk", PlayerSettings.bundleVersion);
-        GenericBuild(SCENES, BUILD_TARGET_PATH, BuildTargetGroup.Android, BuildTarget.Android, opt, "Android_BuildReport");
+        AndroidBuild();
     }
 
     [MenuItem("Custom/CI/Build_Android_Debug")]
     static void PerformAndroidBuildClientDebug()
     {
-        string androidDir = "/Android";
+        BuildOptions opt = BuildOptions.Development | BuildOptions.ConnectWithProfiler;
+
+        AndroidBuild(opt);
+    }
+
+    [MenuItem("Custom/CI/Build_Android_Debug_AutoRun")]
+    static void PerformAndroidBuildClientDebugAutoRun()
+    {
         BuildOptions opt = BuildOptions.AutoRunPlayer | BuildOptions.Development | BuildOptions.ConnectWithProfiler;
 
-        char sep = Path.DirectorySeparatorChar;
-        string BUILD_TARGET_PATH = Path.GetFullPath(".") + sep + TARGET_DIR + androidDir + string.Format("/AndroidBuild_{0}.apk", PlayerSettings.bundleVersion);
-        GenericBuild(SCENES, BUILD_TARGET_PATH, BuildTargetGroup.Android, BuildTarget.Android, opt, "Android_BuildReport");
+        AndroidBuild(opt);
     }
+
 }
