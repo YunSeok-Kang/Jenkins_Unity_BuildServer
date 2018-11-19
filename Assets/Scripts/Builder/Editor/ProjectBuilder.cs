@@ -39,6 +39,9 @@ public class ProjectBuilder
         DateTime currentTIme = DateTime.Now;
         string dateToFileName = string.Format("{0:yyyy-MM-dd-HHmmss}", currentTIme);
 
+        // identifier 설정. iOS와 Android 모두 하나의 세팅으로 해결 가능한 것으로 보임.
+        PlayerSettings.applicationIdentifier = "com.Voxellers.TestBuild"; // 빌드 세팅에 필요한 해당 정보 등은 특정한 Custom Editor로 모아 편집이 가능하도록 수정해야할 것으로 보임.
+
         EditorUserBuildSettings.SwitchActiveBuildTarget(buildTargetGroup, build_target);
         UnityEditor.Build.Reporting.BuildReport res = BuildPipeline.BuildPlayer(scenes, target_path, build_target, build_options);
 
